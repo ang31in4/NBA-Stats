@@ -1,23 +1,34 @@
 import json
-import urllib.request
 from collections import namedtuple
+from nba_api.stats.static import players
+from nba_api.stats.endpoints import playercareerstats
+from nba_api.stats.library.parameters import PerMode36
 
-player_data = namedtuple('player_data', ['first_name', 'last_name', 'id'])
-player_stats = namedtuple('player_stats', ['season', 'points', 'rebounds',
-                                           'assists', 'steals', 'blocks'])
+#player_data = namedtuple('player_data', ['first_name', 'last_name', 'id'])
+#player_stats = namedtuple('player_stats', ['season', 'points', 'rebounds',
+                                           #'assists', 'steals', 'blocks'])
 
-
-def profile_extract(obj: dict):
+def find_player(player_name: str):
     '''
-    Extracts information from a json string that has player's
-    first name, last name, and id.
+    Checks if the inputted player name is in the nba_api database.
     '''
-    f_name = obj['first_name']
-    l_name = obj['last_name']
-    id = obj['id']
-    return player_data(f_name, l_name, id)
+    all_nba_players = players.get_players()
+    try:
+        player_id_data = [player for player in all_nba_players if player["full_name"] == player_name][0]
+        return player_id_data['id']
+    except IndexError:
+        return None
+
+def get_player_career_seasons(user_player_id: str):
+    '''
+    Extracts a list containing every season the player has played.
+    '''
+    career = playercareerstats.PlayerCareerStats(per_mode36=PerMode36.per_game, player_id=user_player_id)
+    df = career.get_data_frames()[0]
+    return df["SEASON_ID"].tolist()
 
 
+"""
 def stats_extract(obj: dict):
     '''
     Extracts information from a json string that has the stats
@@ -31,40 +42,6 @@ def stats_extract(obj: dict):
     blocks = obj['blk']
     return player_stats(season, points, rebounds, assists, steals, blocks)
 
-
-def get_player_database(name: str):
-    '''
-    Retrieves a json object with all the players with a given name,
-    must either be a first name or last name.
-    '''
-
-    url_name = 'https://www.balldontlie.io/api/v1/players?per_page=100' + \
-               '&search=' + name
-
-    request = urllib.request.Request(url_name)
-    response = urllib.request.urlopen(request)
-    response_data = response.read()
-    response.close()
-    data = json.loads(response_data)
-    return data['data']
-
-
-def player_filter(first_name: str, last_name: str):
-    '''
-    Searches through the player database using the last_name first,
-    then looks through first names to see which player has a corresponding
-    first and last name given by the user.
-    '''
-    player_list = get_player_database(last_name)
-
-    index = 0
-    while index <= len(player_list) - 1:
-        player_tuple = profile_extract(player_list[index])
-        if player_tuple.first_name == first_name:
-            return player_tuple
-        index += 1
-
-    return None
 
 
 def get_player_stats(id: int):
@@ -84,3 +61,4 @@ def get_player_stats(id: int):
         return None
     else:
         return stats_extract(data['data'][0])
+"""
