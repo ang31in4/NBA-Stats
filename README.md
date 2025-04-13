@@ -1,10 +1,18 @@
-Python program that plots NBA statistics from the BALLDONTLIE API
+# About
+This program uses [nba_api](https://github.com/swar/nba_api) to plot an NBA player's statistical averages for any season.
 
-This program will create a bar graph of an NBA player's statistical averages for the 2022-2023 season. The graph will include points, rebounds, assists, steals, and blocks. Information is retrieved from BALLDONTLIE API. The bar graph is written into an html file titled 'stat_bar.html'
+It generates a bar graph with points, rebounds, assists, steals, and blocks using Plotly, and saves it as an HTML file named `stat_bar.html`.
 
-Requirements for input:
+## Instructions
 
-must be a player that is actively playing
-must be a player's first and last name
-case-sensitive
-spelling must be correct Examples: 'LeBron James', 'Chris Paul', or 'Ja Morant'
+1. Install all required packages:
+<pre>pip install -r requirements.txt</pre>
+
+1. In folder NBA-Stats/code, run:
+<pre>python main.py</pre>
+
+3. Then, follow the instructions in the terminal.
+
+## Example Graph Output
+
+![Kobe_Bryant2008-2009](https://github.com/user-attachments/assets/0f62971d-d9ae-461f-8032-04acaf1df097)
