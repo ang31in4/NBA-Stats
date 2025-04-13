@@ -1,12 +1,6 @@
-import json
-from collections import namedtuple
 from nba_api.stats.static import players
 from nba_api.stats.endpoints import playercareerstats
 from nba_api.stats.library.parameters import PerMode36
-
-#player_data = namedtuple('player_data', ['first_name', 'last_name', 'id'])
-#player_stats = namedtuple('player_stats', ['season', 'points', 'rebounds',
-                                           #'assists', 'steals', 'blocks'])
 
 def find_player(player_name: str):
     '''
@@ -27,38 +21,10 @@ def get_player_career_seasons(user_player_id: str):
     df = career.get_data_frames()[0]
     return df["SEASON_ID"].tolist()
 
-
-"""
-def stats_extract(obj: dict):
+def get_stats_from_season(user_player_id: str, user_input_season: str):
     '''
-    Extracts information from a json string that has the stats
-    of a player.
+    Retrieves stats from the selected season
     '''
-    season = obj['season']
-    points = obj['pts']
-    rebounds = obj['reb']
-    assists = obj['ast']
-    steals = obj['stl']
-    blocks = obj['blk']
-    return player_stats(season, points, rebounds, assists, steals, blocks)
-
-
-
-def get_player_stats(id: int):
-    '''
-    Retrieves a player's stats using their id as a parameter
-    '''
-
-    url_name = 'https://www.balldontlie.io/api/v1/season_averages' + \
-               '?player_ids[]=' + str(id)
-
-    request = urllib.request.Request(url_name)
-    response = urllib.request.urlopen(request)
-    response_data = response.read()
-    response.close()
-    data = json.loads(response_data)
-    if len(data['data']) == 0:
-        return None
-    else:
-        return stats_extract(data['data'][0])
-"""
+    career = playercareerstats.PlayerCareerStats(per_mode36=PerMode36.per_game, player_id=user_player_id)
+    df = career.get_data_frames()[0]
+    return df.iloc[user_input_season]

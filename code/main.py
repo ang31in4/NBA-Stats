@@ -3,7 +3,6 @@ import data_visualization as dv
 
 
 def run():
-
     name_input = input('Please enter the name of an NBA Player (Please include'
                  ' correct spelling and capitalization): ')
 
@@ -33,24 +32,14 @@ def run():
             continue
         found_season = True
     
+    # Grab data from season
+    player_stats = api.get_stats_from_season(player_id, season_input)
 
-"""
-    if len(split_name) == 2:
+    # Make graph
+    dv.make_graph(name_input, player_stats, career_seasons[season_input])
+    print(f'Success! Graph created for: {name_input}')
+    return False
 
-        player_profile = api.player_filter(split_name[0], split_name[1])
-        if player_profile is None:
-            print('Player does not exist! Try again.')
-            return True
-
-        player_stats = api.get_player_stats(player_profile.id)
-        if player_stats is None:
-            print('Must be a current player! Try again.')
-            return True
-
-        dv.make_graph(player_profile, player_stats)
-        print(f'Success! Graph created for: {name}')
-        return False
-"""
 
 def main():
     print('Welcome! This program will create a bar graph using the statistics'

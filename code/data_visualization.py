@@ -1,23 +1,20 @@
-from collections import namedtuple
 import plotly.express as px
 import pandas as pd
 pd.options.plotting.backend = "plotly"
 
 
-def make_graph(player_data: namedtuple, player_stats: namedtuple):
+def make_graph(player_name: str, player_stats: pd.Series, season_id: str):
     '''
     Writes a bar graph into an html file, using player data
     '''
-    header = player_data.first_name + ' ' + \
-        player_data.last_name + ' ' + \
-        '- Averages per Game (2022-2023)'
+    header = f'{player_name} - Averages per Game {season_id}'
 
     stats_list = [
-        {'Statistic Type': 'Points', 'Value': player_stats.points},
-        {'Statistic Type': 'Rebounds', 'Value': player_stats.rebounds},
-        {'Statistic Type': 'Assists', 'Value': player_stats.assists},
-        {'Statistic Type': 'Steals', 'Value': player_stats.steals},
-        {'Statistic Type': 'Blocks', 'Value': player_stats.blocks}
+        {'Statistic Type': 'Points', 'Value': player_stats['PTS']},
+        {'Statistic Type': 'Rebounds', 'Value': player_stats['REB']},
+        {'Statistic Type': 'Assists', 'Value': player_stats['AST']},
+        {'Statistic Type': 'Steals', 'Value': player_stats['STL']},
+        {'Statistic Type': 'Blocks', 'Value': player_stats['BLK']}
     ]
 
     fig = px.bar(stats_list, x='Statistic Type', y='Value', text_auto=True)
