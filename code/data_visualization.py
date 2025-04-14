@@ -7,7 +7,7 @@ def make_graph(player_name: str, player_stats: pd.Series, season_id: str):
     '''
     Writes a bar graph into an html file, using player data
     '''
-    header = f'{player_name} - Averages per Game {season_id}'
+    header = f'{player_name} - Averages per Game ({season_id})'
 
     stats_list = [
         {'Statistic Type': 'Points', 'Value': player_stats['PTS']},

@@ -1,5 +1,5 @@
 # About
-This program uses [nba_api](https://github.com/swar/nba_api) to plot an NBA player's statistical averages for any season.
+This program uses [nba_api](https://github.com/swar/nba_api) to plot an NBA or WNBA player's statistical averages for any season.
 
 It generates a bar graph with points, rebounds, assists, steals, and blocks using Plotly, and saves it as an HTML file named `stat_bar.html`.
 
